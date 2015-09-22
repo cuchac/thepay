@@ -10,8 +10,16 @@ class DataApiTests(unittest.TestCase):
         self.config = Config()
         self.dataApi = DataApi(self.config)
 
-    def test_connect(self):
-        self.dataApi.connect()
-        methods = self.dataApi.getPaymentMethods()
+    def test_methods(self):
+        self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba kartou')
 
-        print methods[0].name
+    def test_payment_statue(self):
+        self.assertEqual(self.dataApi.getPaymentState(1), 2)
+
+    def test_payment(self):
+        self.assertEqual(self.dataApi.getPayment(1).id, '1')
+
+    def test_payment_info(self):
+        print self.dataApi.getPaymentInstructions(1)
+
+

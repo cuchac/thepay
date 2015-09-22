@@ -12,17 +12,40 @@ class DataApi(object):
         self.config = config
         self.client = None
 
+        self.connect()
+
     def connect(self):
         self.client = suds.client.Client(self.config.dataWebServicesWsdl)
 
     def getPaymentMethods(self):
-        params = self.getParams(OrderedDict((
+        params = self._getParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('accountId', self.config.accountId),
         )))
         return self.client.service.getPaymentMethods(**params).methods[0]
 
-    def getParams(self, params):
+    def getPaymentState(self, paymentId):
+        params = self._getParams(OrderedDict((
+            ('merchantId', self.config.merchantId),
+            ('paymentId', paymentId),
+        )))
+        return int(self.client.service.getPaymentState(**params).state)
+
+    def getPayment(self, paymentId):
+        params = self._getParams(OrderedDict((
+            ('merchantId', self.config.merchantId),
+            ('paymentId', paymentId),
+        )))
+        return self.client.service.getPayment(**params).payment
+
+    def getPaymentInstructions(self, paymentId):
+        params = self._getParams(OrderedDict((
+            ('merchantId', self.config.merchantId),
+            ('paymentId', paymentId),
+        )))
+        return self.client.service.getPaymentInstructions(**params).paymentInfo
+
+    def _getParams(self, params):
         """
 
         :type params: OrderedDict
