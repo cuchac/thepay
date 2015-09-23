@@ -2,11 +2,11 @@ from distutils.core import setup
 
 setup(
     name='thepay',
-    version='1',
-    packages=[''],
-    url='',
+    version='0.1',
+    packages=['thepay'],
+    url='https://github.com/cuchac/thepay',
     license='LGPL',
     author='cuchac',
     author_email='cuchac@email.cz',
-    description=''
+    description='ThePay API library'
 )
