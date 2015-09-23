@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='thepay',
@@ -8,5 +8,9 @@ setup(
     license='LGPL',
     author='cuchac',
     author_email='cuchac@email.cz',
-    description='ThePay API library'
+    description='ThePay API library',
+    install_requires=(
+        'suds_jurko',
+        'six',
+    )
 )
