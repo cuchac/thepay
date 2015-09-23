@@ -20,7 +20,7 @@ class DataApiTests(unittest.TestCase):
         self.assertEqual(self.dataApi.getPayment(1).id, '1')
 
     def test_payment_info(self):
-        print self.dataApi.getPaymentInstructions(1)
+        self.dataApi.getPaymentInstructions(1)
 
     def test_credentials(self):
         self.config.setCredentials(42, 43, 'test', 'test2')

@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import hashlib
 import suds.client
+import six
 
 
 class DataApi(object):
@@ -53,8 +54,8 @@ class DataApi(object):
         hash_params = OrderedDict(params)
         hash_params['password'] = self.config.dataApiPassword
 
-        param_str = "&".join('='.join(map(unicode, pair)) for pair in hash_params.items())
+        param_str = "&".join('='.join(map(six.text_type, pair)) for pair in hash_params.items())
 
-        params['signature'] = hashlib.sha256(param_str).hexdigest()
+        params['signature'] = hashlib.sha256(param_str.encode('utf-8')).hexdigest()
 
         return params
