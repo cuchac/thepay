@@ -22,4 +22,10 @@ class DataApiTests(unittest.TestCase):
     def test_payment_info(self):
         print self.dataApi.getPaymentInstructions(1)
 
+    def test_credentials(self):
+        self.config.setCredentials(42, 43, 'test', 'test2')
 
+        self.assertEqual(self.config.merchantId, 42)
+        self.assertEqual(self.config.accountId, 43)
+        self.assertEqual(self.config.password, 'test')
+        self.assertEqual(self.config.dataApiPassword, 'test2')

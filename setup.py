@@ -8,5 +8,5 @@ setup(
     license='LGPL',
     author='cuchac',
     author_email='cuchac@email.cz',
-    description='', requires=['suds']
+    description=''
 )
