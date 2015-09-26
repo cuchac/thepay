@@ -1,10 +1,10 @@
 from collections import OrderedDict
-import hashlib
 import suds.client
-import six
+
+from thepay.utils import SignatureMixin
 
 
-class DataApi(object):
+class DataApi(SignatureMixin):
     def __init__(self, config):
         """
 
@@ -19,43 +19,29 @@ class DataApi(object):
         self.client = suds.client.Client(self.config.dataWebServicesWsdl)
 
     def getPaymentMethods(self):
-        params = self._getParams(OrderedDict((
+        params = self._signParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('accountId', self.config.accountId),
-        )))
+        )), self.config.dataApiPassword)
         return self.client.service.getPaymentMethods(**params).methods[0]
 
     def getPaymentState(self, paymentId):
-        params = self._getParams(OrderedDict((
+        params = self._signParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('paymentId', paymentId),
-        )))
+        )), self.config.dataApiPassword)
         return int(self.client.service.getPaymentState(**params).state)
 
     def getPayment(self, paymentId):
-        params = self._getParams(OrderedDict((
+        params = self._signParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('paymentId', paymentId),
-        )))
+        )), self.config.dataApiPassword)
         return self.client.service.getPayment(**params).payment
 
     def getPaymentInstructions(self, paymentId):
-        params = self._getParams(OrderedDict((
+        params = self._signParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('paymentId', paymentId),
-        )))
+        )), self.config.dataApiPassword)
         return self.client.service.getPaymentInstructions(**params).paymentInfo
-
-    def _getParams(self, params):
-        """
-
-        :type params: OrderedDict
-        """
-        hash_params = OrderedDict(params)
-        hash_params['password'] = self.config.dataApiPassword
-
-        param_str = "&".join('='.join(map(six.text_type, pair)) for pair in hash_params.items())
-
-        params['signature'] = hashlib.sha256(param_str.encode('utf-8')).hexdigest()
-
-        return params
