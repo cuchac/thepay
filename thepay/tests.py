@@ -75,6 +75,18 @@ class PaymentTests(unittest.TestCase):
                                  'merchantData': 'Order 123',
                              })
 
+        self.payment.setCurrency('USD')
+        self.assertEqual(self.payment.getCurrency(), 'USD')
+
+        self.payment.setCustomerData('test')
+        self.assertEqual(self.payment.getCustomerData(), 'test')
+
+        self.payment.setDeposit(321)
+        self.assertEqual(self.payment.getDeposit(), 321)
+
+        self.payment.setIsRecurring(True)
+        self.assertEqual(self.payment.getIsRecurring(), True)
+
     def test_url(self):
         self.fill_payment()
         self.assertEqual(self.payment.getCreateUrl(),
@@ -89,10 +101,28 @@ class ReturnPaymentTests(unittest.TestCase):
     def test_data(self):
         params_str = 'merchantId=1&accountId=1&value=123.00&currency=CZK&methodId=1&description=Order+123+payment&merchantData=Order+123&status=2&paymentId=34886&ipRating=&isOffline=0&needConfirm=0&signature=f38ff15cc17752a6d4035044a93deb06'
         params = urllib.parse.parse_qs(params_str, keep_blank_values=True)
+        params = {key: value[0] for key, value in params.items()}
 
-        self.payment.parseData({key: value[0] for key, value in params.items()})
+        self.payment.parseData(params)
 
         self.payment.checkSignature()
 
         self.assertIsNotNone(self.payment.getPaymentId())
+
+        self.assertEqual(self.payment.getCurrency(), 'CZK')
+
+        params['isConfirm'] = '1'
+        params['currency'] = None
+        self.payment.parseData(params)
+        self.assertEqual(self.payment.getCurrency(), 'CZK')
+        self.assertRaises(ReturnPayment.InvalidSignature, lambda: self.payment.checkSignature())
+
+        self.assertEqual(self.payment.getSignature(), 'f38ff15cc17752a6d4035044a93deb06')
+        self.assertEqual(self.payment.getValue(), 123.0)
+        self.assertEqual(self.payment.getMethodId(), 1)
+        self.assertEqual(self.payment.getDescription(), 'Order 123 payment')
+        self.assertEqual(self.payment.getStatus(), 2)
+
+    def test_missing_data(self):
+        self.assertRaises(ReturnPayment.MissingParameter, lambda: self.payment.parseData({}))
 

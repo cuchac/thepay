@@ -284,6 +284,34 @@ class ReturnPayment(SignatureMixin):
 
         return True
 
+    def getValue(self):
+        """
+        Returns the value property. If value was not specified using
+        setValue() method, None is returned.
+        """
+        return float(self.data['value'])
+
+    def getDescription(self):
+        """
+        Returns the description property. If description was not specified
+        using setDescription() method, None is returned.
+        """
+        return self.data['description']
+
+    def getMerchantData(self):
+        """
+        Returns the merchantData property. If merchantData was not specified
+        using setMerchantData() method, None is returned.
+        """
+        return self.data['merchantData']
+
+    def getMethodId(self):
+        """
+        Returns the methodId property. If methodId was not specified using
+        setMethodId() property, None is returned.
+        """
+        return int(self.data['methodId'])
+
     def getCurrency(self):
         """
         Overridden to provide default value if no currency is specified in
@@ -311,7 +339,7 @@ class ReturnPayment(SignatureMixin):
         Gets status of the payment.
         @return int one of STATUS_* constants.
         """
-        return self.data['status']
+        return int(self.data['status'])
 
     def getPaymentId(self):
         """
@@ -363,7 +391,6 @@ class ReturnPayment(SignatureMixin):
 
     def getDeposit(self):
         """
-         *
         @return boolean  If card payment will be charged immediately or only blocked and charged later by paymentDeposit operation.
         """
         return self.data['deposit']
