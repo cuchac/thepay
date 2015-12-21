@@ -55,7 +55,7 @@ Redirect user to ThePay - create payment
     
     payment.setValue(321)
     payment.setMethodId(13) # ID of payment method from above
-    payment.setCustomerEmail('test@test.te)
+    payment.setCustomerEmail('test@test.te')
     payment.setDescription('Order 123 payment')
     payment.setReturnUrl('https://example.com/payment')  # where to redirect user after payment
     payment.setMerchantData(123)  # Any custom data - not visible to user
