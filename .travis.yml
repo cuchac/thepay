@@ -4,14 +4,15 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
-  # maintainers to fix their pypy-dev package.
+  - "3.6"
   - "pypy"
+
 # command to install dependencies
 install:
   - pip install .
   - pip install coverage
   - pip install coveralls
+
 # command to run tests
 script: nosetests --logging-level=INFO --with-coverage --cover-tests --cover-package=thepay
 after_success: coveralls
