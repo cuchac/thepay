@@ -16,7 +16,7 @@ class DataApiTests(unittest.TestCase):
     def test_methods(self):
         self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba kartou')
 
-    def test_payment_statue(self):
+    def test_payment_state(self):
         self.assertEqual(self.dataApi.getPaymentState(1), 2)
 
     def test_payment(self):
@@ -63,7 +63,7 @@ class PaymentTests(unittest.TestCase):
     def test_params(self):
         self.fill_payment()
 
-        self.assertDictEqual(dict(self.payment.getParams()),
+        self.assertDictEqual(dict(self.payment._getParams()),
                              {
                                  'value': 123.,
                                  'accountId': 1,

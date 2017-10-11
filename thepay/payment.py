@@ -39,6 +39,19 @@ class Payment(SignatureMixin):
             ('deposit', None),
             ('isRecurring', None),
             ('merchantSpecificSymbol', None),
+            ('eetZaklNepodlDph', None),
+            ('eetZaklDan1', None),
+            ('eetDan1', None),
+            ('eetZaklDan2', None),
+            ('eetDan2', None),
+            ('eetZaklDan3', None),
+            ('eetDan3', None),
+            ('eetCestSluz', None),
+            ('eetPouzitZboz1', None),
+            ('eetPouzitZboz2', None),
+            ('eetPouzitZboz3', None),
+            ('eetUrcenoCerpZuct', None),
+            ('eetCerpZuct', None),
         ))
 
     def setValue(self, value):
@@ -193,7 +206,85 @@ class Payment(SignatureMixin):
         """
         self.data['merchantSpecificSymbol'] = merchantSpecificSymbol
 
-    def getParams(self):
+    def setEetZaklNepodlDph(self, value):
+        """
+        EET - Celková částka plnění osvobozených od DPH, ostatních plnění v Kč
+        """
+        self.data['eetZaklNepodlDph'] = value
+        
+    def setEetZaklDan1(self, value):
+        """
+        EET - Celkový základ daně se základní sazbou DPH v Kč
+        """
+        self.data['eetZaklDan1'] = value
+        
+    def setEetDan1(self, value):
+        """
+        EET - Celková DPH se základní sazbou v Kč
+        """
+        self.data['eetDan1'] = value
+        
+    def setEetZaklDan2(self, value):
+        """
+        EET - Celkový základ daně s první sníženou sazbou DPH v Kč
+        """
+        self.data['eetZaklDan2'] = value
+        
+    def setEetDan2(self, value):
+        """
+        EET - Celková DPH s první sníženou sazbou v Kč
+        """
+        self.data['eetDan2'] = value
+        
+    def setEetZaklDan3(self, value):
+        """
+        EET - Celkový základ daně s druhou sníženou sazbou DPH v Kč
+        """
+        self.data['eetZaklDan3'] = value
+        
+    def setEetDan3(self, value):
+        """
+        EET - Celková DPH s druhou sníženou sazbou v Kč
+        """
+        self.data['eetDan3'] = value
+        
+    def setEetCestSluz(self, value):
+        """
+        EET - Celková částka v režimu DPH pro cestovní službu v Kč
+        """
+        self.data['eetCestSluz'] = value
+        
+    def setEetPouzitZboz1(self, value):
+        """
+        EET - Celková částka v režimu DPH pro prodej použitého zboží se základní sazbou v Kč
+        """
+        self.data['eetPouzitZboz1'] = value
+        
+    def setEetPouzitZboz2(self, value):
+        """
+        EET - Celková částka v režimu DPH pro prodej použitého zboží s první sníženou sazbou v Kč
+        """
+        self.data['eetPouzitZboz2'] = value
+        
+    def setEetPouzitZboz3(self, value):
+        """
+        EET - Celková částka v režimu DPH pro prodej použitého zboží s druhou sníženou sazbou v Kč
+        """
+        self.data['eetPouzitZboz3'] = value
+        
+    def setEetUrcenoCerpZuct(self, value):
+        """
+        EET - Celková částka plateb určená k následnému čerpání nebo zúčtování v Kč
+        """
+        self.data['eetUrcenoCerpZuct'] = value
+        
+    def setEetCerpZuct(self, value):
+        """
+        EET - Celková částka plateb, které jsou následným čerpáním nebo zúčtováním platby v Kč
+        """
+        self.data['eetCerpZuct'] = value
+
+    def _getParams(self):
         """
         List arguments to put into the URL. Returns associative array of
         arguments that should be contained in the ThePay gate call.
@@ -219,7 +310,7 @@ class Payment(SignatureMixin):
 
         :return: url-encoded string
         """
-        params = self._signParams(self.getParams(), self.config.password)
+        params = self._signParams(self._getParams(), self.config.password)
         return "{}?{}".format(self.config.gateUrl, urllib.parse.urlencode(params))
 
 
