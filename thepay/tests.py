@@ -1,11 +1,13 @@
 from __future__ import print_function
 
 import unittest
+import datetime
 
 from thepay.config import Config
 from thepay.dataApi import DataApi
 from thepay.payment import Payment, ReturnPayment
 from six.moves import urllib
+
 
 class DataApiTests(unittest.TestCase):
     def setUp(self):
@@ -24,6 +26,10 @@ class DataApiTests(unittest.TestCase):
 
     def test_payment_info(self):
         self.dataApi.getPaymentInstructions(1)
+
+    def test_payments(self):
+        self.dataApi.getPayments(finished_on_from=datetime.datetime.now() - datetime.timedelta(days=1))
+        self.dataApi.getPayments(state_ids=[2])
 
     def test_credentials(self):
         self.config.setCredentials(42, 43, 'test', 'test2')
@@ -125,4 +131,3 @@ class ReturnPaymentTests(unittest.TestCase):
 
     def test_missing_data(self):
         self.assertRaises(ReturnPayment.MissingParameter, lambda: self.payment.parseData({}))
-

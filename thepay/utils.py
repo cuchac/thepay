@@ -4,9 +4,18 @@ from collections import OrderedDict
 
 
 class SignatureMixin(object):
-    @staticmethod
-    def _buildQuery(params):
-        return "&".join('='.join(map(six.text_type, pair)) for pair in params.items())
+    def _buildQuery(self, params):
+        results = []
+        for key, val in params.items():
+            if isinstance(val, dict):
+                val = self._hashParam(self._buildQuery(val).encode('utf-8'))
+            elif isinstance(val, (list, tuple)):
+                val = '|'.join(map(six.text_type, val))
+            else:
+                val = six.text_type(val)
+            results.append('='.join((six.text_type(key), val)))
+
+        return '&'.join(results)
 
     def _signParams(self, params, password):
         """
