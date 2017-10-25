@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datetime import timezone
+from datetime import tzinfo
 
 import suds.client
 
@@ -108,8 +108,8 @@ class DataApi(SignatureMixin):
 
         :type value: datetime.datetime
         """
-        if not value.tzinfo:
-            value = value.replace(tzinfo=timezone.utc).astimezone()
+        if value.utcoffset() is None:
+            raise Exception('DateTime object has to have timezone assigned')
         return value.replace(microsecond=0).isoformat()
 
     def _convert_to_soap_array(self, params, attribute):

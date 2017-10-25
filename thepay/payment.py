@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from collections import OrderedDict
 import hashlib
 from six.moves import urllib
