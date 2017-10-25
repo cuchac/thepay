@@ -1,4 +1,6 @@
 from collections import OrderedDict
+from datetime import timezone
+
 import suds.client
 
 from thepay.utils import SignatureMixin
@@ -102,8 +104,12 @@ class DataApi(SignatureMixin):
         return self.client.service.getPayments(**signed_params)
 
     def _format_datetime(self, value):
+        """
+
+        :type value: datetime.datetime
+        """
         if not value.tzinfo:
-            value = value.astimezone()
+            value = value.replace(tzinfo=timezone.utc).astimezone()
         return value.replace(microsecond=0).isoformat()
 
     def _convert_to_soap_array(self, params, attribute):
