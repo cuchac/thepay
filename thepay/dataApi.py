@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from datetime import tzinfo
 
-import suds.client
+from zeep import Client
 
 from thepay.utils import SignatureMixin
 
@@ -18,14 +18,14 @@ class DataApi(SignatureMixin):
         self.connect()
 
     def connect(self):
-        self.client = suds.client.Client(self.config.dataWebServicesWsdl)
+        self.client = Client(self.config.dataWebServicesWsdl)
 
     def getPaymentMethods(self):
         params = self._signParams(OrderedDict((
             ('merchantId', self.config.merchantId),
             ('accountId', self.config.accountId),
         )), self.config.dataApiPassword)
-        return self.client.service.getPaymentMethods(**params).methods[0]
+        return self.client.service.getPaymentMethods(**params).methods.method
 
     def getPaymentState(self, paymentId):
         params = self._signParams(OrderedDict((
