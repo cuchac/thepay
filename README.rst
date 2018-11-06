@@ -68,6 +68,8 @@ This code should be run on `returnUrl` from above code
 
 .. code-block:: python
 
+    from thepay.payment import ReturnPayment
+    
     return_payment = ReturnPayment(config)
     return_payment.parseData(self.request.GET)  # Pass all GET received data in form of dict()
     
