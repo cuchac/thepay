@@ -318,12 +318,12 @@ class Payment(SignatureMixin):
 
 class ReturnPayment(SignatureMixin):
     required_data = (
-        "value", "currency", "description", "merchantData",
+        "value", "currency", "methodId", "description", "merchantData",
         "status", "paymentId", "ipRating", "isOffline", "needConfirm"
     )
 
     optional_data = (
-        "isConfirm", "variableSymbol", "methodId", "specificSymbol",
+        "isConfirm", "variableSymbol", "specificSymbol",
         "deposit", "isRecurring", "customerAccountNumber",
         "customerAccountName"
     )
