@@ -33,13 +33,13 @@ class DataApiTests(unittest.TestCase):
         self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba kartou')
 
     def test_payment_state(self):
-        self.assertEqual(self.dataApi.getPaymentState(1), 2)
+        self.assertEqual(self.dataApi.getPaymentState(1006402161), 1)
 
     def test_payment(self):
-        self.assertEqual(self.dataApi.getPayment(1).id, '1')
+        self.assertEqual(self.dataApi.getPayment(1006402161).id, '1006402161')
 
     def test_payment_info(self):
-        self.dataApi.getPaymentInstructions(1)
+        self.dataApi.getPaymentInstructions(1006402161)
 
     def test_payments(self):
         self.dataApi.getPayments(finished_on_from=datetime.datetime.now(UTC()) - datetime.timedelta(days=1))
