@@ -1,59 +1,10 @@
 from __future__ import print_function
 
 import unittest
-import uuid
-import datetime
-from datetime import tzinfo, timedelta
 
 from thepay.config import Config
-from thepay.dataApi import DataApi
-from thepay.gateApi import GateApi, GateError
 from thepay.payment import Payment, ReturnPayment
 from six.moves import urllib
-
-
-class UTC(tzinfo):
-    """UTC"""
-
-    def utcoffset(self, dt):
-        return timedelta(0)
-
-    def tzname(self, dt):
-        return "UTC"
-
-    def dst(self, dt):
-        return timedelta(0)
-
-
-class DataApiTests(unittest.TestCase):
-    def setUp(self):
-        super(DataApiTests, self).setUp()
-        self.config = Config()
-        self.dataApi = DataApi(self.config)
-
-    def test_methods(self):
-        self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba kartou')
-
-    def test_payment_state(self):
-        self.assertEqual(self.dataApi.getPaymentState(1006402161), 1)
-
-    def test_payment(self):
-        self.assertEqual(self.dataApi.getPayment(1006402161).id, '1006402161')
-
-    def test_payment_info(self):
-        self.dataApi.getPaymentInstructions(1006402161)
-
-    def test_payments(self):
-        self.dataApi.getPayments(finished_on_from=datetime.datetime.now(UTC()) - datetime.timedelta(days=1))
-        self.dataApi.getPayments(state_ids=[2])
-
-    def test_credentials(self):
-        self.config.setCredentials(42, 43, 'test', 'test2')
-
-        self.assertEqual(self.config.merchantId, 42)
-        self.assertEqual(self.config.accountId, 43)
-        self.assertEqual(self.config.password, 'test')
-        self.assertEqual(self.config.dataApiPassword, 'test2')
 
 
 class PaymentTests(unittest.TestCase):
@@ -147,24 +98,3 @@ class ReturnPaymentTests(unittest.TestCase):
 
     def test_missing_data(self):
         self.assertRaises(ReturnPayment.MissingParameter, lambda: self.payment.parseData({}))
-
-
-class GateApiTests(unittest.TestCase):
-    def setUp(self):
-        self.config = Config()
-        self.gateApi = GateApi(self.config)
-
-    def test_invalid_cardCreateRecurrentPayment(self):
-        with self.assertRaises(GateError):
-            self.gateApi.cardCreateRecurrentPayment(
-                '4394c54e-27f1-411b-b5e0-3f4e1ecf3e2c',
-                uuid.uuid4(),
-                10
-            )
-
-    def test_cardCreateRecurrentPayment(self):
-        self.gateApi.cardCreateRecurrentPayment(
-            'c53be2ae-0b84-46e2-90f9-03c144a1a328',
-            uuid.uuid4(),
-            10
-        )
