@@ -1,13 +1,13 @@
 from setuptools import setup
 
 setup(
-    name='thepay',
-    version='0.4',
+    name='nijel-thepay',
+    version='0.5',
     packages=['thepay'],
-    url='https://github.com/cuchac/thepay',
+    url='https://github.com/nijel/thepay',
     license='LGPL',
     author='cuchac',
-    author_email='cuchac@email.cz',
+    author_email='michal@cihar.com',
     description='ThePay API library',
     install_requires=(
         'suds-community',
