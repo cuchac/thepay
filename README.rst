@@ -4,13 +4,16 @@ ThePay
 
 Library for accesing ThePay payment gateway from python
 
-.. image:: https://badge.fury.io/py/thepay.svg
-    :target: http://badge.fury.io/py/thepay
-.. image:: https://travis-ci.org/cuchac/thepay.svg?branch=master
-    :target: https://travis-ci.org/cuchac/thepay
-.. image:: https://coveralls.io/repos/cuchac/thepay/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/cuchac/thepay?branch=master
-    
+.. image:: https://github.com/nijel/thepay/workflows/Test/badge.svg
+    :target: https://github.com/nijel/thepay/actions?query=workflow%3ATest
+
+.. image:: https://img.shields.io/pypi/v/nijel-thepay.svg
+    :target: https://pypi.org/project/nijel-thepay/
+    :alt: PyPI package
+
+.. image:: https://codecov.io/gh/nijel/thepay/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/nijel/thepay
+
 ========
 Example
 ========
