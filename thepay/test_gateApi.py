@@ -1,6 +1,4 @@
 from __future__ import print_function
-
-import time
 import requests
 import unittest
 import uuid

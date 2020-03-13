@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import hashlib
-from datetime import tzinfo
 
 from suds.client import Client
 
