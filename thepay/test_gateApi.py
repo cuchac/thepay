@@ -1,11 +1,14 @@
 from __future__ import print_function
 
+import time
+import requests
 import unittest
 import uuid
 
 from thepay.config import Config
 from thepay.gateApi import GateApi, GateError
 from thepay.dataApi import DataApi
+from thepay.payment import Payment
 
 
 class GateApiTests(unittest.TestCase):
@@ -23,11 +26,31 @@ class GateApiTests(unittest.TestCase):
             )
 
     def test_cardCreateRecurrentPayment(self):
-        for payment in self.dataApi.getPayments(method_ids=[21, 31], state_ids=[2]).payments.payment:
-            if payment.merchantData and payment.recurring and payment.deposit:
-                break
+        payment_id = uuid.uuid4()
+        # Create new recurring payment
+        payment = Payment(self.config)
+        payment.setValue(123)
+        payment.setReturnUrl('http://test.te')
+        payment.setCustomerEmail('test@test.te')
+        payment.setDescription('Order 123 payment')
+        payment.setMethodId(31)
+        payment.setMerchantData(payment_id)
+        payment.setIsRecurring(1)
+        # Simulate user going through payment process
+        response = requests.get(payment.getCreateUrl())
+        payment_url = response.url[:-1] + "p"
+        response = requests.get(payment_url)
+        body = response.content.decode()
+        assert "Číslo platby" in body
+        for line in body.splitlines():
+            if '<input type="hidden" name="id"' in line:
+                payment_number = line.split('value="')[1].split('"')[0]
+        # Confirm payment state
+        response = requests.post("https://www.thepay.cz/demo-gate/return.php", data={"state": 2, "underpaid_value": 1, "id": payment_number}, allow_redirects=False)
+
+        # Create recurrent payment for previous one
         self.gateApi.cardCreateRecurrentPayment(
-            payment.merchantData,
+            payment_id,
             uuid.uuid4(),
-            1
+            123
         )

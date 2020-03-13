@@ -11,6 +11,7 @@ setup(
     description='ThePay API library',
     install_requires=(
         'suds-community',
+        'requests',
         'six',
     )
 )
