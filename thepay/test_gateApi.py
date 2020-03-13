@@ -26,7 +26,7 @@ class GateApiTests(unittest.TestCase):
             )
 
     def test_cardCreateRecurrentPayment(self):
-        payment_id = uuid.uuid4()
+        payment_id = str(uuid.uuid4())
         # Create new recurring payment
         payment = Payment(self.config)
         payment.setValue(123)
@@ -51,6 +51,6 @@ class GateApiTests(unittest.TestCase):
         # Create recurrent payment for previous one
         self.gateApi.cardCreateRecurrentPayment(
             payment_id,
-            uuid.uuid4(),
+            str(uuid.uuid4()),
             123
         )
