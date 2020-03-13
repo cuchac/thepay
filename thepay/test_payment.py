@@ -39,8 +39,8 @@ class PaymentTests(unittest.TestCase):
         self.assertDictEqual(dict(self.payment._getParams()),
                              {
                                  'value': 123.,
-                                 'accountId': 1,
-                                 'merchantId': 1,
+                                 'accountId': self.config.accountId,
+                                 'merchantId': self.config.merchantId,
                                  'returnUrl': 'http://test.te',
                                  'customerEmail': 'test@test.te',
                                  'description': 'Order 123 payment',
@@ -63,7 +63,8 @@ class PaymentTests(unittest.TestCase):
     def test_url(self):
         self.fill_payment()
         self.assertEqual(self.payment.getCreateUrl(),
-                         'https://www.thepay.cz/demo-gate/?merchantId=1&accountId=1&value=123.0&description=Order+123+payment&merchantData=Order+123&customerEmail=test%40test.te&returnUrl=http%3A%2F%2Ftest.te&methodId=1&signature=7450a2ca57f4a380ed7c4e71d6e0e6bf')
+            "https://www.thepay.cz/demo-gate/?merchantId=1&accountId=3&value=123.0&description=Order+123+payment&merchantData=Order+123&customerEmail=test%40test.te&returnUrl=http%3A%2F%2Ftest.te&methodId=1&signature=9edd1af378d8168f5023d03831d18a52"
+        )
 
 
 class ReturnPaymentTests(unittest.TestCase):
@@ -72,7 +73,7 @@ class ReturnPaymentTests(unittest.TestCase):
         self.payment = ReturnPayment(self.config)
 
     def test_data(self):
-        params_str = 'merchantId=1&accountId=1&value=123.00&currency=CZK&methodId=1&description=Order+123+payment&merchantData=Order+123&status=2&paymentId=34886&ipRating=&isOffline=0&needConfirm=0&signature=f38ff15cc17752a6d4035044a93deb06'
+        params_str = 'merchantId=1&accountId=3&value=123.00&currency=CZK&methodId=1&description=Order+123+payment&merchantData=Order+123&status=2&paymentId=1006482871&ipRating=&isOffline=0&needConfirm=0&signature=45711869e9fc739d1c0e7d98b223a279'
         params = urllib.parse.parse_qs(params_str, keep_blank_values=True)
         params = {key: value[0] for key, value in params.items()}
 
@@ -90,7 +91,7 @@ class ReturnPaymentTests(unittest.TestCase):
         self.assertEqual(self.payment.getCurrency(), 'CZK')
         self.assertRaises(ReturnPayment.InvalidSignature, lambda: self.payment.checkSignature())
 
-        self.assertEqual(self.payment.getSignature(), 'f38ff15cc17752a6d4035044a93deb06')
+        self.assertEqual(self.payment.getSignature(), '45711869e9fc739d1c0e7d98b223a279')
         self.assertEqual(self.payment.getValue(), 123.0)
         self.assertEqual(self.payment.getMethodId(), 1)
         self.assertEqual(self.payment.getDescription(), 'Order 123 payment')

@@ -3,7 +3,7 @@ class Config(object):
     # ThePay API
     gateUrl = 'https://www.thepay.cz/demo-gate/'
     merchantId = 1
-    accountId = 1
+    accountId = 3
     password = 'my$up3rsecr3tp4$$word'
 
     # Data API

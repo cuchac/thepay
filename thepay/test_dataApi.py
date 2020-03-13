@@ -28,7 +28,7 @@ class DataApiTests(unittest.TestCase):
         self.dataApi = DataApi(self.config)
 
     def test_methods(self):
-        self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba24')
+        self.assertEqual(self.dataApi.getPaymentMethods()[0].name, 'Platba kartou')
 
     def test_payment_state(self):
         self.assertEqual(self.dataApi.getPaymentState(1006402161), 1)
