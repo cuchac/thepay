@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from datetime import tzinfo
 
 import suds.client
 
