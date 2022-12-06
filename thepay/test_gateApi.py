@@ -45,12 +45,12 @@ class GateApiTests(unittest.TestCase):
                 payment_number = line.split('value="')[1].split('"')[0]
         # Confirm payment state
         response = requests.post("https://www.thepay.cz/demo-gate/return.php", data={"state": 2, "underpaid_value": 1, "id": payment_number}, allow_redirects=False)
+        print(response.headers['Location'])
 
         # Create recurrent payment for previous one
         # This should work, but is failing for some reason
-        with self.assertRaises(GateError):
-            self.gateApi.cardCreateRecurrentPayment(
-                payment_id,
-                str(uuid.uuid4()),
-                123
-            )
+        self.gateApi.cardCreateRecurrentPayment(
+            payment_id,
+            str(uuid.uuid4()),
+            123
+        )
